@@ -1,0 +1,17 @@
+{
+  "id": "backupledger",
+  "title": "Backup Ledger",
+  "description": "Find stale or missing restic backups and review the integrity checks that actually ran.",
+  "category": "projects",
+  "tags": ["backup", "restic", "linux", "homelab", "integrity", "inventory"],
+  "icon": "server",
+  "url": "https://github.com/jsdyer/backupledger",
+  "source": "https://github.com/jsdyer/backupledger",
+  "hosting": "external",
+  "access": "install",
+  "requirements": "Linux, Python 3.10+ and restic",
+  "data_info": {
+    "mode": "installed",
+    "detail": "Your local restic snapshot metadata and recorded integrity-check results stay on your machine. An optional local timer refreshes inventory hourly."
+  }
+}

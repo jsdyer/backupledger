@@ -1,0 +1,16 @@
+{
+  "repositories": [
+    {
+      "id": "nas",
+      "name": "NAS backup",
+      "repository": "/mnt/backup/restic",
+      "password_file": "~/.config/restic/nas-password",
+      "stale_after_hours": 48,
+      "inventory_after_hours": 26,
+      "check_after_days": 35,
+      "expected": [
+        {"hostname": "nas", "paths": ["/srv/data"]}
+      ]
+    }
+  ]
+}

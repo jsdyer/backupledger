@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Backup Ledger inventory hourly
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+RandomizedDelaySec=5m
+Unit=backupledger-refresh.service
+
+[Install]
+WantedBy=timers.target

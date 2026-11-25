@@ -1,0 +1,10 @@
+[Unit]
+Description=Capture private restic backup inventory
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/backupledger refresh
+UMask=0077
+NoNewPrivileges=yes
+# Optional backend credentials, mode 0600. No file is required for local repos.
+EnvironmentFile=-%h/.config/backupledger/environment
