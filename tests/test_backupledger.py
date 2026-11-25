@@ -54,6 +54,16 @@ class LedgerTests(unittest.TestCase):
             self.assertEqual(len(data["snapshots"]), 1)
             self.assertIn("previous inventory retained", data["refresh_error"])
 
+    def test_rfc3339_fractional_precision_and_timezone_required(self):
+        for digits, microseconds in (("1", 100000), ("12", 120000), ("123", 123000),
+                                     ("1234", 123400), ("12345", 123450),
+                                     ("123456", 123456), ("123456789", 123456)):
+            self.assertEqual(ledger.parse_time(f"2026-11-24T12:00:00.{digits}Z").microsecond, microseconds)
+        self.assertEqual(ledger.parse_time("2026-11-24T12:00:00Z").microsecond, 0)
+        for stamp in ("2026-11-24T12:00:00", "2026-11-24T12:00:00.Z", "2026-13-24T12:00:00Z"):
+            with self.assertRaises(ValueError):
+                ledger.parse_time(stamp)
+
     def test_failure_preserves_last_capture_and_hides_raw_stderr(self):
         self.refresh([snapshot()])
         with patch.object(ledger, "run_restic", return_value=subprocess.CompletedProcess([], 1, "", "secret-password-in-URL")):

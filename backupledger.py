@@ -26,9 +26,13 @@ def now():
 def parse_time(value):
     if not isinstance(value, str):
         raise ValueError("Timestamp must be a string")
-    result = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    if result.tzinfo is None:
-        raise ValueError("Timestamp must include a timezone")
+    match = re.fullmatch(r"(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2})(?:\.(\d{1,9}))?(Z|[+-]\d{2}:\d{2})", value)
+    if not match:
+        raise ValueError("Timestamp must use RFC3339 with a timezone")
+    # Restic uses Go's RFC3339Nano; Python 3.10 accepts only three or six
+    # fractional digits. Normalize to datetime's microsecond precision first.
+    fraction = "." + match[2][:6].ljust(6, "0") if match[2] else ""
+    result = datetime.fromisoformat(match[1] + fraction + match[3].replace("Z", "+00:00"))
     return result.astimezone(UTC)
 
 
